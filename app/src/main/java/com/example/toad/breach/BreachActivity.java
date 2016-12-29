@@ -4,7 +4,6 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
-import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,9 +14,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
 
 public class BreachActivity extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
@@ -47,7 +43,7 @@ public class BreachActivity extends AppCompatActivity {
         GLSurfaceView glView =
                 (GLSurfaceView)findViewById(R.id.glView);
 
-        glView.setEGLContextClientVersion(2);
+        glView.setEGLContextClientVersion(1);
         glView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         glView.setRenderer(GL_item);
 
@@ -74,6 +70,10 @@ public class BreachActivity extends AppCompatActivity {
 
         // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
+
+        GameEngine game = new GameEngine();
+        game.Start(GL_item, glView);
+
     }
 
 
