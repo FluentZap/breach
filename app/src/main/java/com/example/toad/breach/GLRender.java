@@ -1,6 +1,5 @@
 package com.example.toad.breach;
 
-import android.app.Application;
 import android.content.Context;
 import android.opengl.GLES11;
 import android.opengl.GLSurfaceView;
@@ -15,7 +14,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 public class GLRender implements GLSurfaceView.Renderer {
 
-    public int color;
+    public int y;
 
     private GLHelper.Square square;
     private int tex0;
@@ -81,9 +80,11 @@ public class GLRender implements GLSurfaceView.Renderer {
 
         GLES11.glPopMatrix();
 
+        //y += 1;
+        //if (y >= 500) y = 0;
 
         GLES11.glPushMatrix();
-        GLES11.glTranslatef(0, 300, 0);
+        GLES11.glTranslatef(0, 300 + y, 0);
         GLES11.glScalef(64.0f * 2, 64.0f * 2, 0);
 
         GLES11.glDrawElements(GLES11.GL_TRIANGLES, 6, GLES11.GL_UNSIGNED_SHORT, square.drawListBuffer);

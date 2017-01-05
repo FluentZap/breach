@@ -4,6 +4,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
+import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,7 @@ public class BreachActivity extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
     private TextView mLevelTextView;
     private GLSurfaceView GL_item;
-
+    private GameEngine game;
 
 
 
@@ -69,8 +70,20 @@ public class BreachActivity extends AppCompatActivity {
         // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
 
-        GameEngine game = new GameEngine();
-        game.Start(GL_item, glView);
+        game = new GameEngine(this, GL_item, glView);
+
+        game.start();
+
+
+
+        //GameEngine game = new GameEngine();
+
+        //Thread gamethread = new Thread(game);
+
+
+        //gamethread.start();
+
+        //game.Start(this, GL_item, glView);
 
     }
 
