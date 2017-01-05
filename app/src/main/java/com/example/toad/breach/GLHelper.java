@@ -1,13 +1,10 @@
 package com.example.toad.breach;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.opengl.GLES11;
-import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
 import java.nio.ByteBuffer;
