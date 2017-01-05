@@ -75,10 +75,10 @@ public class GLHelper {
         // number of coordinates per vertex in this array
         static final int COORDS_PER_VERTEX = 3;
         static float squareCoords[] = {
-                -1.0f,  -1.0f, 0.0f,   // bot left
-                -1.0f, 1.0f, 0.0f,   // top left
+                0.0f,  0.0f, 0.0f,   // bot left
+                0.0f, 1.0f, 0.0f,   // top left
                 1.0f, 1.0f, 0.0f,   // top right
-                1.0f,  -1.0f, 0.0f }; // bot right
+                1.0f,  0.0f, 0.0f }; // bot right
 
         static float texCoords[] = {
                 0.0f, 1.0f,   // bot left

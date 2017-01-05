@@ -11,7 +11,7 @@ public class GameEngine {
 
     public void Start(GLRender glr, GLSurfaceView glView)
     {
-            //glView.requestRender();
+            glView.requestRender();
     }
 
 
