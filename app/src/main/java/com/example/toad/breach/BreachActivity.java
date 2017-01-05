@@ -38,7 +38,7 @@ public class BreachActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        GLRender GL_item = new GLRender();
+        GLRender GL_item = new GLRender(this);
 
         GLSurfaceView glView =
                 (GLSurfaceView)findViewById(R.id.glView);
@@ -46,8 +46,6 @@ public class BreachActivity extends AppCompatActivity {
         glView.setEGLContextClientVersion(1);
         glView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         glView.setRenderer(GL_item);
-
-
 
 
         // Create the next level button, which tries to show an interstitial when clicked.
