@@ -9,12 +9,9 @@ import android.opengl.GLSurfaceView;
 
 public class GameEngine {
 
-    public void Start(GLRender glr,GLSurfaceView glView)
+    public void Start(GLRender glr, GLSurfaceView glView)
     {
-        while(glr.color < 255) {
-            glr.color += 1;
-            glView.requestRender();
-        }
+            //glView.requestRender();
     }
 
 

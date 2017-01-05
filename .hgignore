@@ -1,0 +1,11 @@
+syntax: glob
+.gitignore
+syntax: glob
+.gradle
+local.properties
+.idea
+.DS_Store
+build
+*.iml
+gradlew
+gradlew.bat
