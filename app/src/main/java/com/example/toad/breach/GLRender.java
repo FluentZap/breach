@@ -1,8 +1,10 @@
 package com.example.toad.breach;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.opengl.GLES11;
 import android.opengl.GLSurfaceView;
+import android.view.MotionEvent;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -13,17 +15,21 @@ import javax.microedition.khronos.opengles.GL11;
  */
 
 public class GLRender implements GLSurfaceView.Renderer {
-
-    public int y;
-
     private GLHelper.Square square;
     private int tex0;
     private Context context;
+    public Point screen_size;
+    public Point screen_Scroll = new Point(0, 0);
+
+    public battle_Map current_Map;
+
+
 
     public GLRender(Context mcontext)
     {
     context = mcontext;
     }
+
 
 
     @Override
@@ -47,6 +53,7 @@ public class GLRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
+        screen_size = new Point(width, height);
 
         GLES11.glViewport(0, 0, width, height);
 
@@ -65,8 +72,10 @@ public class GLRender implements GLSurfaceView.Renderer {
         GLES11.glClear(GLES11.GL_COLOR_BUFFER_BIT);
         GLES11.glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 
+        if (current_Map != null)
+            draw_battle_map();
 
-
+/*
         GLES11.glVertexPointer(3, GL11.GL_FLOAT, 0, square.vertexBuffer);
         GLES11.glBindTexture(GLES11.GL_TEXTURE_2D, tex0);
         GLES11.glTexCoordPointer(2, GLES11.GL_FLOAT, 0, square.texBuffer);
@@ -84,13 +93,73 @@ public class GLRender implements GLSurfaceView.Renderer {
         //if (y >= 500) y = 0;
 
         GLES11.glPushMatrix();
-        GLES11.glTranslatef(0, 300 + y, 0);
+        GLES11.glTranslatef(0, 300, 0);
         GLES11.glScalef(64.0f * 2, 64.0f * 2, 0);
 
         GLES11.glDrawElements(GLES11.GL_TRIANGLES, 6, GLES11.GL_UNSIGNED_SHORT, square.drawListBuffer);
 
         GLES11.glPopMatrix();
+        */
     }
+
+
+
+
+
+    private void draw_battle_map() {
+
+        GLES11.glVertexPointer(3, GL11.GL_FLOAT, 0, square.vertexBuffer);
+        GLES11.glBindTexture(GLES11.GL_TEXTURE_2D, tex0);
+        GLES11.glTexCoordPointer(2, GLES11.GL_FLOAT, 0, square.texBuffer);
+
+        GLES11.glPushMatrix();
+        GLES11.glTranslatef(0, 300, 0);
+        GLES11.glScalef(64.0f * 2, 64.0f * 2, 0);
+
+        GLES11.glDrawElements(GLES11.GL_TRIANGLES, 6, GLES11.GL_UNSIGNED_SHORT, square.drawListBuffer);
+
+        GLES11.glPopMatrix();
+
+
+        for (int x = 0; x < current_Map.size.x; x++) {
+            for (int y = 0; y < current_Map.size.y; y++) {
+
+                GLES11.glPushMatrix();
+                GLES11.glTranslatef(0, screen_size.y - 64, 0);
+
+                GLES11.glTranslatef(screen_Scroll.x + x * 64,screen_Scroll.y +  y * -64, 0);
+
+                GLES11.glScalef(64.0f, 64.0f, 0);
+                GLES11.glDrawElements(GLES11.GL_TRIANGLES, 6, GLES11.GL_UNSIGNED_SHORT, square.drawListBuffer);
+                GLES11.glPopMatrix();
+
+            }
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

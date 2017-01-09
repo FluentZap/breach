@@ -1,0 +1,72 @@
+Combat unit
+
+All base class
+Start as base class
+
+Recruit
+	Abilities
+
+Types of skills
+	Activated Actions
+	Activated Actions from another class
+	Passive
+	Passive
+	Reaction
+	Bonus Action
+	Movement
+
+Class xp is divided 70% goes to current class	
+5% per ability unless it's at max level
+
+
+Equipment
+
+Left
+Right
+Hat
+Armor
+Feet
+Accessory1
+Accessory2
+
+
+CL Attack From character level	10
+Combined level Attack
+level 100 if full modifier
+RL = 1.0	100 in recruit		1.0
+SL = 1.5	30 in solder		1.5
+ML = 0.0	20 in mage			0.5
+
+CL * (RL * (level / 100)) + CL * (SL * (level / 100)) + CL * (ML * (level / 100))
+
+
+Weapon scaleing rating
+Scales off differnt stats
+
+
+Class tree from Recruit
+
+perk style xcom
+
+
+Stats
+Job type increse
+Abilities unlock at levels
+Modifiers unlock at later levels to upgrade skills/abilities
+
+
+Character Level = base stats
+Combined level in classes = Modifiers
+
+Takes ?300? levels counting down from the highest
+
+
+Stats
+HP
+MP
+Attack
+Spirit
+Defence
+Resistance
+Speed
+Movement
