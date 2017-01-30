@@ -1,128 +1,112 @@
 package com.example.toad.breach;
 
-import android.content.Context;
 import android.graphics.Point;
-import android.opengl.GLSurfaceView;
-import android.view.DragEvent;
+import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 
-import java.util.AbstractQueue;
 import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
 
 /**
  * Created by Toad on 12/29/2016.
  */
 
-public class GameEngine extends Thread{
+public class GameEngine {
+
+
+    public GameEngine() {
+
+    }
+
+
     static final long FPS = 60;
-
-
     public boolean Loop_Active = true;
-    private Context con;
-    private GLRender glr;
-    private GLSurfaceView glView;
+    public battle_Map current_Map;
+    long startTime;
 
+    public Point screen_Scroll = new Point(0, 0);
+    public Float Scale = new Float(2.0f);
 
-    private battle_Map current_Map;
-    private LinkedList<MotionEvent> inputStack;
+    public void Process(LinkedList<MotionEvent> inputStack) {
+        //long ticksPS = 1000 / FPS;
+        //long startTime;
+        //long sleepTime;
+        if (inputStack.size() != 0)
+            process_ui(inputStack);
 
-
-    public GameEngine(Context mcontext, GLRender gl, GLSurfaceView glV)
-    {
-        con = mcontext;
-        glr = gl;
-        glView = glV;
-
-        inputStack = new LinkedList<>();
-
-
-
-        glView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                inputStack.add(event);
-                return true;
-
-            }
-        });
-
-
-
+        process_logic();
     }
 
 
+    private void process_logic() {
 
-
-
-    @Override
-    public void run()
-    {
         long ticksPS = 1000 / FPS;
-        long startTime;
-        long sleepTime;
-        while(Loop_Active) {
+
+        if (System.currentTimeMillis() > startTime + ticksPS) {
+            //  screen_Scroll.x += 8;
             startTime = System.currentTimeMillis();
-            sleepTime = ticksPS - (System.currentTimeMillis() - startTime);
-            try {
-                if (sleepTime > 0) {
-                    logic();
-                    ui();
-                    sleep(sleepTime);
-                }
-                else
-                    sleep(10);
-            } catch (Exception e) {}
         }
-    }
 
+        //if (screen_Scroll.x > 300)
+        //    screen_Scroll.x = 0;
 
-    public void logic()
-    {
         if (current_Map == null)
-            current_Map = new battle_Map(new Point(16, 16));
-        glr.current_Map = current_Map;
-
+            current_Map = new battle_Map(new Point(8, 8));
     }
 
     private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
     private float mPreviousX;
     private float mPreviousY;
+    private float mSizeThetaStart;
+    private float mOldScale;
 
     private float mscx;
     private float mscy;
 
 
-
-    public void ui()
-    {
+    private void process_ui(LinkedList<MotionEvent> inputStack) {
         MotionEvent e = inputStack.poll();
 
-        float x = e.getX();
-        float y = -e.getY();
+        //if (e.getPointerCount() == 1)
+            switch (e.getAction()) {
+                case MotionEvent.ACTION_POINTER_DOWN:
+                case MotionEvent.ACTION_DOWN:
 
+                    mPreviousX = e.getX();
+                    mPreviousY = -e.getY();
+                    mscx = screen_Scroll.x;
+                    mscy = screen_Scroll.y;
 
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mPreviousX = x;
-                mPreviousY = y;
-                mscx = glr.screen_Scroll.x;
-                mscy = glr.screen_Scroll.y;
+                case MotionEvent.ACTION_MOVE:
+                    screen_Scroll.x = (int) (mscx + (e.getX() - mPreviousX));
+                    screen_Scroll.y = (int) (mscy + (-e.getY() - mPreviousY));
 
-            case MotionEvent.ACTION_MOVE:
-                glr.screen_Scroll.x = (int)(mscx + (x - mPreviousX));
-                glr.screen_Scroll.y = (int)(mscy + (y - mPreviousY));
+                case MotionEvent.ACTION_UP:
 
-            case MotionEvent.ACTION_UP:
+            }
 
-        }
+        if (e.getPointerCount() == 2)
+
+            switch (e.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_DOWN:
+
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    mOldScale = Scale;
+                    mSizeThetaStart = Math.abs(e.getX(0) - e.getX(1)) + Math.abs(e.getY(0) - e.getY(1));
+                    Log.i("motion", Float.toString(e.getX(0)));
+
+                case MotionEvent.ACTION_MOVE:
+
+                    float theta = Math.abs(e.getX(0) - e.getX(1)) + Math.abs(e.getY(0) - e.getY(1));
+                    Scale = mOldScale * (theta / mSizeThetaStart);
+                    if (Scale < 1) Scale = 1.0f;
+                    if (Scale > 10) Scale = 10.0f;
+
+                case MotionEvent.ACTION_UP:
+
+            }
 
 
     }
-
-
 
 
 }

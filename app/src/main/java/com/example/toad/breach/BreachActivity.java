@@ -4,10 +4,12 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
+import android.opengl.GLES11Ext;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,12 +27,8 @@ public class BreachActivity extends AppCompatActivity {
     private Button mNextLevelButton;
     private InterstitialAd mInterstitialAd;
     private TextView mLevelTextView;
-    public GLSurfaceView GL_item;
+    public GLSurfaceView glView;
     private GameEngine game;
-
-
-
-
 
 
     @Override
@@ -43,15 +41,21 @@ public class BreachActivity extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        GLRender GL_item = new GLRender(this);
+        //Start the Game Engine class
+        game = new GameEngine();
+
+        GLRender gl_Render = new GLRender(this, game);
 
         GLSurfaceView glView =
-                (GLSurfaceView)findViewById(R.id.glView);
+                (GLSurfaceView) findViewById(R.id.glView);
 
         glView.setEGLContextClientVersion(1);
         glView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        glView.setRenderer(GL_item);
+        glView.setRenderer(gl_Render);
 
+        gl_Render.attach_input(glView);
+
+        //glView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
 
         // Create the next level button, which tries to show an interstitial when clicked.
@@ -75,22 +79,28 @@ public class BreachActivity extends AppCompatActivity {
         // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
 
-        game = new GameEngine(this, GL_item, glView);
-
-        game.start();
-
-
-
-        //GameEngine game = new GameEngine();
-
-        //Thread gamethread = new Thread(game);
-
-
-        //gamethread.start();
-
-        //game.Start(this, GL_item, glView);
-
     }
+
+    @Override
+     public boolean onTouchEvent(MotionEvent event) {
+        Log.i("motion", event.toString());
+        return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (glView != null)
+            glView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (glView != null)
+            glView.onPause();
+    }
+
 
 
     private InterstitialAd newInterstitialAd() {
